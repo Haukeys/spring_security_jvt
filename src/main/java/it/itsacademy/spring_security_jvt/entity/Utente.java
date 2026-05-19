@@ -27,7 +27,7 @@ public class Utente {
 
     @ManyToMany
     @JoinTable(name="ruoli_user",
-            joinColumns = @JoinColumn(name = "idUtente"), // Clé étrangère de l'entité actuelle (ex: User)
+            joinColumns = @JoinColumn(name = "id_Utente"), // Clé étrangère de l'entité actuelle (ex: User)
             inverseJoinColumns = @JoinColumn(name = "idRuolo")) // Clé étrangère de l'entité Ruolo)
     @Column(nullable = false)
     private Set<Ruolo>ruels;
@@ -36,5 +36,7 @@ public class Utente {
     private String nome;
     @Column(nullable = false)
     private String cogonme;
+    @Column(nullable = false)
+    private Boolean is_active=true;
 
 }
