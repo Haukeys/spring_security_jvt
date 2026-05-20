@@ -13,7 +13,6 @@ import java.util.List;
 public interface UtenteMapper {
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "password", ignore = true)
     @Mapping(target = "password", ignore = true) // gestito con BCrypt
     public Utente toUtenteSignUp(SignUpUserDTO signUpUserDTO);
 
