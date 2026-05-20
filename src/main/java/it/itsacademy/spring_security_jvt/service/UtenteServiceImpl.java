@@ -24,7 +24,7 @@ public class UtenteServiceImpl implements UtenteService {
     private final UtenteMapper utenteMapper;
 
     @Override
-    public List<UtenteDTO> getAllUtenti() {
+    public List<UtenteDTO> getAllUtenti() {//VIEW
 
         return utenteRepository.findAll().stream()
                 // converte ogni entita JPA in un UtenteDTO via MapStruct
@@ -34,7 +34,7 @@ public class UtenteServiceImpl implements UtenteService {
     }
 
     @Override
-    public UtenteDTO getUtenteById(UUID idUtente) {
+    public UtenteDTO getUtenteById(UUID idUtente) {//VIEW ONE
         // cerca l utente usando il suo UUID o solleva un exception c est non esiste
         Utente utente = utenteRepository.findById(idUtente)
                 .orElseThrow(() -> new RuntimeException("inesistente,impossibile trovare l'utente con ID: " + idUtente));
@@ -44,14 +44,14 @@ public class UtenteServiceImpl implements UtenteService {
     }
 
     @Override
-    public UtenteDTO updateUtente(UUID idUtente, UtenteDTO utenteDTO) {
+    public UtenteDTO updateUtente(UUID idUtente, UtenteDTO utenteDTO) {//UPDATE
         // verifica l esistenza de l'utente da modificare
         Utente utente = utenteRepository.findById(idUtente)
                 .orElseThrow(() -> new RuntimeException("Impossible aggiornare: Utente inesistente"));
 
         // aggiorna i campi autorizzati
         utente.setUsername(utenteDTO.getUsername());
-        utente.setRuels(utenteDTO.getRuels());
+        utente.setRuoli(utenteDTO.getRuoli());
 
         // salva les modifiche in db via Hibernate
         Utente updatedUtente = utenteRepository.save(utente);
@@ -61,7 +61,7 @@ public class UtenteServiceImpl implements UtenteService {
     }
 
     @Override
-    public void deleteUtente(UUID idUtente) {
+    public void deleteUtente(UUID idUtente) {//DELETE
         // verifica se l' id esiste per tentare la cancellazione
         if (!utenteRepository.existsById(idUtente)) {
             throw new RuntimeException("Impossible eliminare: utente inesistente");

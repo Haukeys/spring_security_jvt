@@ -58,7 +58,7 @@ public class AuthServiceImpl implements AuthService {
         userRoles.add(defaultRuolo);
 
         // assegnazione del set di ruolo a l'utente
-        utente.setRuels(userRoles);
+        utente.setRuoli(userRoles);
 
 
         Utente saved = utenteRepository.save(utente);
