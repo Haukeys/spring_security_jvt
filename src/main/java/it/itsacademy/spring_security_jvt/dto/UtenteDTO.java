@@ -20,9 +20,9 @@ public class UtenteDTO {
 
     private String password;
 
-    private Set<Ruolo> ruels;
+    private Set<Ruolo> ruoli;
 
     private String nome;
 
-    private String cogonme;
+    private String cognome;
 }

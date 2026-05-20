@@ -30,12 +30,12 @@ public class Utente {
             joinColumns = @JoinColumn(name = "id_Utente"), // Clé étrangère de l'entité actuelle (ex: User)
             inverseJoinColumns = @JoinColumn(name = "idRuolo")) // Clé étrangère de l'entité Ruolo)
     @Column(nullable = false)
-    private Set<Ruolo>ruels;
+    private Set<Ruolo>ruoli;
 
     @Column(nullable = false)
     private String nome;
     @Column(nullable = false)
-    private String cogonme;
+    private String cognome;
 
     public Boolean isAttivo(){
         return true;
