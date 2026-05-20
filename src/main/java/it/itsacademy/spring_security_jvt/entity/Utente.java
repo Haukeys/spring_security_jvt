@@ -36,7 +36,12 @@ public class Utente {
     private String nome;
     @Column(nullable = false)
     private String cogonme;
-    @Column(nullable = false)
-    private Boolean is_active=true;
+
+    public Boolean isAttivo(){
+        return true;
+    }
+    public Boolean isDisabilitato(){
+        return false;
+    }
 
 }

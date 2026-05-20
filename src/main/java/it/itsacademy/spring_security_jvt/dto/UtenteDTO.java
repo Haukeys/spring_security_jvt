@@ -22,7 +22,6 @@ public class UtenteDTO {
 
     private Set<Ruolo> ruels;
 
-
     private String nome;
 
     private String cogonme;
