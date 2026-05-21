@@ -1,5 +1,5 @@
 package it.itsacademy.spring_security_jvt.entity;
-//jwt
+
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -18,7 +18,7 @@ public class Utente {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)//
     @Column(name = "id_Utente")
-    private UUID idUtente;//UUID standard c est mieux
+    private UUID idUtente;//UUID standard per i id
     @Column(nullable = false)
     private String username;
 
@@ -27,9 +27,8 @@ public class Utente {
 
     @ManyToMany
     @JoinTable(name="ruoli_user",
-            joinColumns = @JoinColumn(name = "id_Utente"), // Clé étrangère de l'entité actuelle (ex: User)
-            inverseJoinColumns = @JoinColumn(name = "idRuolo")) // Clé étrangère de l'entité Ruolo)
-    @Column(nullable = false)
+            joinColumns = @JoinColumn(name = "id_Utente"),
+            inverseJoinColumns = @JoinColumn(name = "idRuolo"))
     private Set<Ruolo>ruoli;
 
     @Column(nullable = false)
