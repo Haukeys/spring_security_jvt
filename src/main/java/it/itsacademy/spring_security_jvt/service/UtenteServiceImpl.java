@@ -4,7 +4,6 @@ import it.itsacademy.spring_security_jvt.dto.UtenteDTO;
 import it.itsacademy.spring_security_jvt.entity.Utente;
 import it.itsacademy.spring_security_jvt.mapper.UtenteMapper;
 import it.itsacademy.spring_security_jvt.repository.UtenteRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +12,6 @@ import java.util.UUID;
 
 
 @Service
-@Transactional
 @RequiredArgsConstructor // gestisce automaticamente il costruttore per i campi private final
 public class UtenteServiceImpl implements UtenteService {
 
@@ -62,6 +60,8 @@ public class UtenteServiceImpl implements UtenteService {
         Utente utente = utenteRepository.findByIdUtente(idUtente)
                 .orElseThrow(() -> new RuntimeException("Utente non trovato con id: " + idUtente));
 
+        // disabilita l utente (Soft Delete)
+        utente.setIsAttivo(false);
 
         System.out.println("L'utente " + utente.getUsername() + " è stato disabilitato.");
         //utente disabilitato ma sempre presente in db
