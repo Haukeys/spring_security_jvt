@@ -14,13 +14,11 @@ import java.util.UUID;
 @NoArgsConstructor
 public class UtenteDTO {
 
-    private UUID idUtente;//UUID standard c est mieux
+    private UUID idUtente;
 
     private String username;
 
-    private String password;
-
-    private Set<Ruolo> ruoli;
+    private Set<RuoloDTO> ruoli;
 
     private String nome;
 
