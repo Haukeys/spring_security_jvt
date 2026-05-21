@@ -35,12 +35,7 @@ public class Utente {
     private String nome;
     @Column(nullable = false)
     private String cognome;
-
-    public Boolean isAttivo(){
-        return true;
-    }
-    public Boolean isDisabilitato(){
-        return false;
-    }
+    @Column(nullable = false)
+    public Boolean isAttivo=true;
 
 }
