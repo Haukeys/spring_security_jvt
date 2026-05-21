@@ -17,7 +17,7 @@ public interface UtenteMapper {
     @Mapping(target = "cognome", ignore = true)
     @Mapping(target = "ruoli", ignore = true)
     @Mapping(target ="isAttivo",ignore = true)
-    @Mapping(target="isDisabilitato",ignore = true)
+
     public Utente toUtenteSignUp(SignUpUserDTO signUpUserDTO);
 
 
