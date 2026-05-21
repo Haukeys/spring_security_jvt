@@ -4,34 +4,30 @@ import it.itsacademy.spring_security_jvt.dto.UtenteDTO;
 import it.itsacademy.spring_security_jvt.entity.Utente;
 import it.itsacademy.spring_security_jvt.mapper.UtenteMapper;
 import it.itsacademy.spring_security_jvt.repository.UtenteRepository;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
+
 
 @Service
-@AllArgsConstructor
+@Transactional
+@RequiredArgsConstructor // gestisce automaticamente il costruttore per i campi private final
 public class UtenteServiceImpl implements UtenteService {
 
-    @Autowired
-    private final UtenteRepository utenteRepository;
 
-    @Autowired
+    private final UtenteRepository utenteRepository;
     private final UtenteMapper utenteMapper;
 
     @Override
     public List<UtenteDTO> getAllUtenti() {//VIEW
-
-        return utenteRepository.findAll().stream()
-                // converte ogni entita JPA in un UtenteDTO via MapStruct
-                .map(utenteMapper::toUtenteDTO)
-                // colletta tutto in una liste finale di DTOs
-                .collect(Collectors.toList());
-    }
+            //crea una lista di entita
+            List<Utente> utenti = utenteRepository.findAll();
+            //converte in dto la lista
+            return utenteMapper.toUtenteDTOList(utenti);
+        }
 
     @Override
     public UtenteDTO getUtenteById(UUID idUtente) {//VIEW ONE
@@ -44,29 +40,32 @@ public class UtenteServiceImpl implements UtenteService {
     }
 
     @Override
-    public UtenteDTO updateUtente(UUID idUtente, UtenteDTO utenteDTO) {//UPDATE
-        // verifica l esistenza de l'utente da modificare
-        Utente utente = utenteRepository.findById(idUtente)
-                .orElseThrow(() -> new RuntimeException("Impossible aggiornare: Utente inesistente"));
+    public UtenteDTO updateUtente(UUID idUtente, String nome, String cognome) {
 
-        // aggiorna i campi autorizzati
-        utente.setUsername(utenteDTO.getUsername());
-        utente.setRuoli(utenteDTO.getRuoli());
+        // verifica l esistenza de l'utente da modificare
+        Utente utente = utenteRepository.findByIdUtente(idUtente)
+                .orElseThrow(() -> new RuntimeException("Utente non trovato con id: " + idUtente));
+
+        // aggiorna i campi autorizzati//i altri campi gestiti in authservice
+        utente.setNome(nome);
+        utente.setCognome(cognome);
 
         // salva les modifiche in db via Hibernate
-        Utente updatedUtente = utenteRepository.save(utente);
+        Utente uptdatedUtente = utenteRepository.save(utente);
 
         // torna l oggeto aggiornato e lo converte in DTO
-        return utenteMapper.toUtenteDTO(updatedUtente);
+        return utenteMapper.toUtenteDTO(uptdatedUtente);
     }
 
     @Override
-    public void deleteUtente(UUID idUtente) {//DELETE
-        // verifica se l' id esiste per tentare la cancellazione
-        if (!utenteRepository.existsById(idUtente)) {
-            throw new RuntimeException("Impossible eliminare: utente inesistente");
-        }
-        // cancella l'utente corrispondente a l'UUID fornito
-        utenteRepository.deleteById(idUtente);
+    public void disableUtente(UUID idUtente) {//soft delete
+        Utente utente = utenteRepository.findByIdUtente(idUtente)
+                .orElseThrow(() -> new RuntimeException("Utente non trovato con id: " + idUtente));
+
+
+        System.out.println("L'utente " + utente.getUsername() + " è stato disabilitato.");
+        //utente disabilitato ma sempre presente in db
+        utenteRepository.save(utente);
     }
 }
+
