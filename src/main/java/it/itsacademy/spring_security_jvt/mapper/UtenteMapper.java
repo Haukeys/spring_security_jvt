@@ -9,15 +9,20 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring",uses = RuoloMapper.class)
 public interface UtenteMapper {
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "password", ignore = true) // gestito con BCrypt
+    @Mapping(target = "idUtente", ignore = true)
+    @Mapping(target = "nome", ignore = true)
+    @Mapping(target = "cognome", ignore = true)
+    @Mapping(target = "ruoli", ignore = true)
+    @Mapping(target ="isAttivo",ignore = true)
+    @Mapping(target="isDisabilitato",ignore = true)
     public Utente toUtenteSignUp(SignUpUserDTO signUpUserDTO);
 
 
     public UtenteDTO toUtenteDTO(Utente utente);
     public Utente toUtente(UtenteDTO utenteDTO);
+
     public List<UtenteDTO> toUtenteDTOList(List<Utente> utenti);
 }
