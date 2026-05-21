@@ -15,10 +15,10 @@ public interface UtenteService {
         // recupera un utente usando l UUID
         public UtenteDTO getUtenteById(UUID idUtente);
 
-        // aggiorna le informazione del Utente
-        public UtenteDTO updateUtente(UUID idUtente, UtenteDTO utenteDTO);
+        // aggiorna le informazione del Utente(quelle modificabili)
+        public UtenteDTO updateUtente(UUID idUtente, String nome, String cognome);
 
-        // elimina definitivamente un utente dal db
-        public void deleteUtente(UUID idUtente);
+        // disabilita l'utente
+        public void disableUtente(UUID idUtente);
 
 }
