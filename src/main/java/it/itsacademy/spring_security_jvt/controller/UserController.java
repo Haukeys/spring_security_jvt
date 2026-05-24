@@ -1,5 +1,6 @@
 package it.itsacademy.spring_security_jvt.controller;
 import it.itsacademy.spring_security_jvt.dto.UtenteDTO;
+import it.itsacademy.spring_security_jvt.dto.UtenteUpdateDTO;
 import it.itsacademy.spring_security_jvt.service.UtenteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,24 +17,31 @@ import java.util.UUID;
 
         private final UtenteService utenteService; // Injecte ton service utilisateur
 
-        // 1. Récupérer tous les utilisateurs (Accessible par n'importe quel utilisateur authentifié)
+        // Récupérer tous les utilisateurs (Accessible par n'importe quel utilisateur authentifié)
         @GetMapping
         public ResponseEntity<List<UtenteDTO>> getAllUtenti() {
             List<UtenteDTO> utenti = utenteService.getAllUtenti(); // Assure-toi que cette méthode existe dans ton service
             return ResponseEntity.ok(utenti);
         }
 
-        // 2. Récupérer un utilisateur par son ID
+        //Récupérer un utilisateur par son ID
         @GetMapping("/{id}")
-        public ResponseEntity<UtenteDTO> getUtenteById(@PathVariable UUID idUtente) {
+        public ResponseEntity<UtenteDTO> getUtenteById(@PathVariable("id") UUID idUtente) {//ajout de "id pour faire comprendre a spring que c est l id de l utente qu on veux"
             UtenteDTO utente = utenteService.getUtenteById(idUtente);
             return ResponseEntity.ok(utente);
         }
+        @PutMapping("/{id}")
+        public ResponseEntity<UtenteDTO> updateUtente(@PathVariable("id") UUID idUtente, @RequestBody UtenteUpdateDTO utenteUpdateDTO) {
 
-        // 3. Supprimer un utilisateur (Exemple de restriction d'accès par rôle)
+            UtenteDTO utenteUpdated = utenteService.updateUtente(idUtente, utenteUpdateDTO);
+            return ResponseEntity.ok(utenteUpdated);
+        }
+
+        // Supprimer un utilisateur (Exemple de restriction d'accès par rôle)
         // Seul un utilisateur avec le rôle 'ADMIN' pourra exécuter cette requête
         @DeleteMapping("/{id}")
-        public ResponseEntity<Void> deleteUtente(@PathVariable UUID idUtente) {
+        @PreAuthorize("hasRole('USER')")
+        public ResponseEntity<Void> deleteUtente(@PathVariable("id") UUID idUtente) {
             utenteService.disableUtente(idUtente);
             return ResponseEntity.noContent().build();
         }
