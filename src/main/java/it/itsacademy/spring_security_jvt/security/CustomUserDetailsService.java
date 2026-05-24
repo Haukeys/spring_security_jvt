@@ -1,5 +1,5 @@
 package it.itsacademy.spring_security_jvt.security;
-//implementato da ROSS
+
 
 import it.itsacademy.spring_security_jvt.entity.Utente;
 import it.itsacademy.spring_security_jvt.repository.UtenteRepository;
@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Collections;
 
 @Service
 @RequiredArgsConstructor
@@ -48,9 +49,17 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     private static Collection<? extends GrantedAuthority> getAuthorities(Utente utente) {
+        // Vérification de sécurité : si la liste est null, on retourne une liste vide
+        if (utente.getRuoli() == null) {
+            return Collections.emptyList();
+        }
+
         String[] authorities = utente.getRuoli().stream()
-                .map(item -> item.getRole().name())//usiamo il nome del enum
+                // Optionnel : Ajoute le préfixe "ROLE_" si ce n'est pas déjà le cas,
+                // c'est une convention forte dans Spring Security
+                .map(item -> "ROLE_" + item.getRole().name())
                 .toArray(String[]::new);
+
         return AuthorityUtils.createAuthorityList(authorities);
     }
 
