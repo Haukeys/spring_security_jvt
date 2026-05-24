@@ -2,6 +2,7 @@ package it.itsacademy.spring_security_jvt.service;
 
 
 import it.itsacademy.spring_security_jvt.dto.UtenteDTO;
+import it.itsacademy.spring_security_jvt.dto.UtenteUpdateDTO;
 import it.itsacademy.spring_security_jvt.entity.Role;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public interface UtenteService {
         public UtenteDTO getUtenteById(UUID idUtente);
 
         // aggiorna le informazione del Utente(quelle modificabili)
-        public UtenteDTO updateUtente(UUID idUtente, String nome, String cognome);
+        public UtenteDTO updateUtente(UUID idUtente, UtenteUpdateDTO utenteUpdateDTO);
 
         // disabilita l'utente
         public void disableUtente(UUID idUtente);

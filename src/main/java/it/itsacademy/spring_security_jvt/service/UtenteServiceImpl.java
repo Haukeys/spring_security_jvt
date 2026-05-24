@@ -1,11 +1,13 @@
 package it.itsacademy.spring_security_jvt.service;
 
 import it.itsacademy.spring_security_jvt.dto.UtenteDTO;
+import it.itsacademy.spring_security_jvt.dto.UtenteUpdateDTO;
 import it.itsacademy.spring_security_jvt.entity.Utente;
 import it.itsacademy.spring_security_jvt.mapper.UtenteMapper;
 import it.itsacademy.spring_security_jvt.repository.UtenteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -20,6 +22,7 @@ public class UtenteServiceImpl implements UtenteService {
     private final UtenteMapper utenteMapper;
 
     @Override
+    @Transactional(readOnly = true)//PAS JAKARTA l autre.
     public List<UtenteDTO> getAllUtenti() {//VIEW
             //crea una lista di entita
             List<Utente> utenti = utenteRepository.findAll();
@@ -28,6 +31,7 @@ public class UtenteServiceImpl implements UtenteService {
         }
 
     @Override
+    @Transactional(readOnly = true)
     public UtenteDTO getUtenteById(UUID idUtente) {//VIEW ONE
         // cerca l utente usando il suo UUID o solleva un exception c est non esiste
         Utente utente = utenteRepository.findById(idUtente)
@@ -38,15 +42,16 @@ public class UtenteServiceImpl implements UtenteService {
     }
 
     @Override
-    public UtenteDTO updateUtente(UUID idUtente, String nome, String cognome) {
+    @Transactional
+    public UtenteDTO updateUtente(UUID idUtente, UtenteUpdateDTO utenteUpdateDTO) {
 
         // verifica l esistenza de l'utente da modificare
         Utente utente = utenteRepository.findByIdUtente(idUtente)
                 .orElseThrow(() -> new RuntimeException("Utente non trovato con id: " + idUtente));
 
         // aggiorna i campi autorizzati//i altri campi gestiti in authservice
-        utente.setNome(nome);
-        utente.setCognome(cognome);
+        utente.setNome(utenteUpdateDTO.getNome());
+        utente.setCognome(utenteUpdateDTO.getCognome());
 
         // salva les modifiche in db via Hibernate
         Utente uptdatedUtente = utenteRepository.save(utente);
