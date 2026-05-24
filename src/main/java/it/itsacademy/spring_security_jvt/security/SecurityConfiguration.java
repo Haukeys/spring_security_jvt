@@ -44,9 +44,10 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/auth/**","/error/**").permitAll() // Routes publiques (Signup / Login) error pour afficher le message d erreur en video
+                        .requestMatchers("/auth/**","/error").permitAll() // Routes publiques (Signup / Login) error pour afficher le message d erreur en video
                         .anyRequest().authenticated()                // Tout le reste est verrouillé
                 )
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
