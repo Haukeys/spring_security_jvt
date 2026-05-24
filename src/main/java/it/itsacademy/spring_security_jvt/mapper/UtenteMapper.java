@@ -13,15 +13,15 @@ import java.util.List;
 public interface UtenteMapper {
 
     @Mapping(target = "idUtente", ignore = true)
-    @Mapping(target = "nome", ignore = true)
-    @Mapping(target = "cognome", ignore = true)
     @Mapping(target = "ruoli", ignore = true)
     @Mapping(target ="isAttivo",ignore = true)
 
     public Utente toUtenteSignUp(SignUpUserDTO signUpUserDTO);
 
-
     public UtenteDTO toUtenteDTO(Utente utente);
+
+    @Mapping(target = "password", ignore = true)
+    @Mapping(target = "isAttivo", ignore = true)
     public Utente toUtente(UtenteDTO utenteDTO);
 
     public List<UtenteDTO> toUtenteDTOList(List<Utente> utenti);
