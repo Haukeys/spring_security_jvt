@@ -3,6 +3,7 @@ package it.itsacademy.spring_security_jvt.security;
 
 import it.itsacademy.spring_security_jvt.entity.Utente;
 import it.itsacademy.spring_security_jvt.repository.UtenteRepository;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -24,6 +26,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     private UtenteRepository utenteRepository;
 
     @Override
+    @Transactional//pas le jakarta
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
 
@@ -43,7 +46,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 true,//accountNonExpired
 
                 true,//credentialsNonExpired
-                !utente.getIsAttivo(),//accountNonLocked
+                true,//le vrai account notlocked , ici le probleme 403 tout a leur
                 getAuthorities(utente)
         );
     }
