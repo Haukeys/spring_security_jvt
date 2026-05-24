@@ -11,4 +11,6 @@ import org.hibernate.validator.constraints.UUID;
 public class SignUpUserDTO {
     private String username;
     private String password;
+    private String nome;
+    private String cognome;
 }
