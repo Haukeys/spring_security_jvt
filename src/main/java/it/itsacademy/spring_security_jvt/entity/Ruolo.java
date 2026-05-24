@@ -17,6 +17,8 @@ public class Ruolo {
     @Column(name = "id_Ruolo")
     private Long idRuolo;
 
+
+    @Enumerated(EnumType.STRING) // Force le stockage du nom (USER) et non de l'index (1)
     @Column(nullable = false)
     private Role role;
 }
