@@ -2,6 +2,7 @@ package it.itsacademy.spring_security_jvt.controller;
 import it.itsacademy.spring_security_jvt.dto.UtenteDTO;
 import it.itsacademy.spring_security_jvt.dto.UtenteUpdateDTO;
 import it.itsacademy.spring_security_jvt.service.UtenteService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,12 +27,12 @@ import java.util.UUID;
 
         //Récupérer un utilisateur par son ID
         @GetMapping("/{id}")
-        public ResponseEntity<UtenteDTO> getUtenteById(@PathVariable("id") UUID idUtente) {//ajout de "id pour faire comprendre a spring que c est l id de l utente qu on veux"
+        public ResponseEntity<UtenteDTO> getUtenteById(@Valid @PathVariable("id") UUID idUtente) {//ajout de "id pour faire comprendre a spring que c est l id de l utente qu on veux"
             UtenteDTO utente = utenteService.getUtenteById(idUtente);
             return ResponseEntity.ok(utente);
         }
         @PutMapping("/{id}")
-        public ResponseEntity<UtenteDTO> updateUtente(@PathVariable("id") UUID idUtente, @RequestBody UtenteUpdateDTO utenteUpdateDTO) {
+        public ResponseEntity<UtenteDTO> updateUtente(@Valid @PathVariable("id") UUID idUtente, @RequestBody UtenteUpdateDTO utenteUpdateDTO) {
 
             UtenteDTO utenteUpdated = utenteService.updateUtente(idUtente, utenteUpdateDTO);
             return ResponseEntity.ok(utenteUpdated);
@@ -41,7 +42,7 @@ import java.util.UUID;
         // Seul un utilisateur avec le rôle 'ADMIN' pourra exécuter cette requête
         @DeleteMapping("/{id}")
         @PreAuthorize("hasRole('USER')")
-        public ResponseEntity<Void> deleteUtente(@PathVariable("id") UUID idUtente) {
+        public ResponseEntity<Void> deleteUtente(@Valid @PathVariable("id") UUID idUtente) {
             utenteService.disableUtente(idUtente);
             return ResponseEntity.noContent().build();
         }
